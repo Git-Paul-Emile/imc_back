@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== ENUMS ====================
+
+enum StatutPaiement {
+  EN_ATTENTE
+  VALIDE
+  ECHOUE
+  REMBOURSE
+}
+
+enum MoyenPaiement {
+  ORANGE_MONEY
+  WAVE
+  VISA
+}
+
+enum Code {
+  A
+  B
+  C
+}
+
+// ==================== THÈMES ET CATÉGORIES ====================
+
+model Theme {
+  id        Int      @id @default(autoincrement())
+  titre     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  categories      Categorie[]
+  evaluations     Evaluation[]
+  interpretations Interpretation[]
+
+  @@map("themes")
+}
+
+model Categorie {
+  id        Int      @id @default(autoincrement())
+  titre     String
+  code      Code
+  themeId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  theme     Theme      @relation(fields: [themeId], references: [id], onDelete: Cascade)
+  questions Question[]
+
+  @@map("categories")
+}
+
+model Question {
+  id          Int      @id @default(autoincrement())
+  libelle     String
+  categorieId Int
+  ordre       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  categorie          Categorie           @relation(fields: [categorieId], references: [id], onDelete: Cascade)
+  evaluationReponses EvaluationReponse[]
+
+  @@map("questions")
+}
+
+model Reponse {
+  id        Int      @id @default(autoincrement())
+  libelle   String
+  point     Int
+  ordre     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  evaluationReponses EvaluationReponse[]
+
+  @@map("reponses")
+}
+
+// ==================== ENTREPRISE ====================
+
+model Entreprise {
+  id              Int      @id @default(autoincrement())
+  nom             String
+  domaineActivite String
+  tel             String
+  email           String
+  adresse         String
+  motif           String   @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  evaluations Evaluation[]
+
+  @@map("entreprises")
+}
+
+// ==================== ÉVALUATION ====================
+
+model Evaluation {
+  id               Int      @id @default(autoincrement())
+  entrepriseId     Int
+  themeId          Int
+  scoreTotal       Int      @default(0)
+  interpretationId Int?
+  isFree           Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  entreprise     Entreprise          @relation(fields: [entrepriseId], references: [id], onDelete: Cascade)
+  theme          Theme               @relation(fields: [themeId], references: [id])
+  interpretation Interpretation?     @relation(fields: [interpretationId], references: [id])
+  reponses       EvaluationReponse[]
+  paiement       Paiement?
+
+  @@map("evaluations")
+}
+
+model EvaluationReponse {
+  id           Int      @id @default(autoincrement())
+  evaluationId Int
+  questionId   Int
+  reponseId    Int
+  pointObtenu  Int
+  createdAt    DateTime @default(now())
+
+  evaluation Evaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+  question   Question   @relation(fields: [questionId], references: [id])
+  reponse    Reponse    @relation(fields: [reponseId], references: [id])
+
+  @@unique([evaluationId, questionId])
+  @@map("evaluation_reponses")
+}
+
+// ==================== INTERPRÉTATION ====================
+
+model Interpretation {
+  id               Int      @id @default(autoincrement())
+  titre            String
+  description      String   @db.Text
+  recommandationId Int
+  scoreMin         Int
+  scoreMax         Int
+  themeId          Int
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  recommandation Recommandation @relation(fields: [recommandationId], references: [id])
+  theme          Theme          @relation(fields: [themeId], references: [id])
+  evaluations    Evaluation[]
+
+  @@map("interpretations")
+}
+
+model Recommandation {
+  id          Int      @id @default(autoincrement())
+  description String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  interpretations Interpretation[]
+
+  @@map("recommandations")
+}
+
+// ==================== PAIEMENT ====================
+
+model Paiement {
+  id            Int            @id @default(autoincrement())
+  evaluationId  Int            @unique
+  montant       Decimal        @db.Decimal(10, 2)
+  statut        StatutPaiement @default(EN_ATTENTE)
+  moyenPaiement MoyenPaiement?
+  reference     String         @unique
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  evaluation Evaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+
+  @@map("paiements")
+}
