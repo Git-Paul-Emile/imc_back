@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import themeRoutes from "../routes/theme.route.js";
+import categorieRoutes from "../routes/categorie.route.js";
 
 
 const app = express();
@@ -56,6 +57,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use("/api/themes", themeRoutes);
+app.use("/api/categories", categorieRoutes);
 
 
 

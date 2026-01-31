@@ -1,4 +1,6 @@
 import themeRepository from "../repositories/theme.repository.js";
+import type { CreateCategorieInput } from "../validators/CategorieSchema.js";
+import type { UpdateThemeInput } from "../validators/ThemeShema.js";
 
 class ThemeService {
 
@@ -12,7 +14,7 @@ class ThemeService {
         }
     }
 
-    async createTheme(data: { titre: string }) {
+    async createTheme(data: CreateCategorieInput) {
         try {
             const theme = await themeRepository.create(data);
             return {
@@ -63,7 +65,7 @@ class ThemeService {
         }
     }
 
-    async updateTheme(id: string, data: Partial<{ titre: string }>) {
+    async updateTheme(id: string, data: UpdateThemeInput) {
         try {
             // Vérifier si le thème existe
             const existingTheme = await themeRepository.findById(id);

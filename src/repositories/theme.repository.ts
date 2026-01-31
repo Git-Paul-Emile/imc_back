@@ -3,6 +3,17 @@ import type { Theme } from "../../src/generated/prisma/client.js"
 import type { CreateThemeInput, UpdateThemeInput } from "../validators/ThemeShema.js"
 
 class ThemeRepository {
+
+    async count(): Promise<number> {
+        try {
+            const count = await prisma.theme.count();
+            return count;
+        } catch (error) {
+            console.error('Erreur lors du comptage des thèmes:', error);
+            throw new Error('Impossible de compter les thèmes');
+        }
+    }
+    
     async create(data: CreateThemeInput): Promise<Theme> {
         try {
             const theme = await prisma.theme.create({
@@ -69,15 +80,7 @@ class ThemeRepository {
         }
     }
 
-    async count(): Promise<number> {
-        try {
-            const count = await prisma.theme.count();
-            return count;
-        } catch (error) {
-            console.error('Erreur lors du comptage des thèmes:', error);
-            throw new Error('Impossible de compter les thèmes');
-        }
-    }
+    
 
     
 }
