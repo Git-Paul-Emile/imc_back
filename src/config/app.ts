@@ -15,6 +15,8 @@ const allowedOrigins = [
   process.env.FRONT_URL || 'http://localhost:8080',
   'http://localhost:5173', // Vite default
   'http://localhost:8080',
+  'http://localhost:3000', // React default
+  'http://localhost:3001', // React alternative
   //'https://horty-coiffure-front.vercel.app/' // URL de production Vercel
 ];
 
@@ -49,6 +51,10 @@ app.use(cookieParser());
 
 
 // Routes
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', message: 'API opérationnelle' });
+});
+
 app.use("/api/themes", themeRoutes);
 
 
