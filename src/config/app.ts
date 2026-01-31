@@ -8,6 +8,7 @@ import { AppError } from "../utils/AppError.js";
 import themeRoutes from "../routes/theme.route.js";
 import categorieRoutes from "../routes/categorie.route.js";
 import questionRoutes from "../routes/question.route.js";
+import reponseRoutes from "../routes/reponse.route.js";
 
 
 const app = express();
@@ -60,6 +61,7 @@ app.get('/api/health', (req, res) => {
 app.use("/api/themes", themeRoutes);
 app.use("/api/categories", categorieRoutes);
 app.use("/api/questions", questionRoutes);
+app.use("/api/reponses", reponseRoutes);
 
 
 
