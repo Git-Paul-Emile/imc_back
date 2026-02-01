@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import { StatusCodes } from "http-status-codes";
 import { AppError } from "../utils/AppError.js";
 import themeRoutes from "../routes/theme.route.js";
+import evaluationRoutes from "../routes/evaluation.route.js";
 import categorieRoutes from "../routes/categorie.route.js";
 import questionRoutes from "../routes/question.route.js";
 import reponseRoutes from "../routes/reponse.route.js";
@@ -62,6 +63,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use("/api/themes", themeRoutes);
+app.use("/api/evaluations", evaluationRoutes);
 app.use("/api/categories", categorieRoutes);
 app.use("/api/questions", questionRoutes);
 app.use("/api/reponses", reponseRoutes);

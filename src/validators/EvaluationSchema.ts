@@ -9,6 +9,10 @@ export const createEvaluationSchema = z.object({
     .number()
     .int("L'ID du thème doit être un entier")
     .positive("L'ID du thème doit être positif"),
+  motif: z
+    .string()
+    .min(2, "Le motif doit contenir au moins 2 caractères")
+    .max(255, "Le motif ne doit pas dépasser 255 caractères"),
   scoreTotal: z
     .number()
     .int("Le score total doit être un entier")
