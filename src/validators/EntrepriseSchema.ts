@@ -21,10 +21,6 @@ export const createEntrepriseSchema = z.object({
     .string()
     .min(1, "L'adresse est requise")
     .max(500, "L'adresse ne peut pas dépasser 500 caractères"),
-  motif: z
-    .string()
-    .min(1, "Le motif est requis")
-    .max(5000, "Le motif ne peut pas dépasser 5000 caractères"),
 });
 
 export const updateEntrepriseSchema = createEntrepriseSchema.partial();

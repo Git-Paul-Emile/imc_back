@@ -91,10 +91,9 @@ model Entreprise {
   id              Int      @id @default(autoincrement())
   nom             String
   domaineActivite String
-  tel             String
-  email           String
+  tel             String   @unique
+  email           String   @unique
   adresse         String
-  motif           String   @db.Text
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -109,6 +108,7 @@ model Evaluation {
   id               Int      @id @default(autoincrement())
   entrepriseId     Int
   themeId          Int
+  motif            String   @db.Text
   scoreTotal       Int      @default(0)
   interpretationId Int?
   isFree           Boolean  @default(false)
