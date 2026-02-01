@@ -153,7 +153,7 @@ model Interpretation {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
-  recommandation Recommandation @relation(fields: [recommandationId], references: [id])
+  recommandation Recommandation @relation(fields: [recommandationId], references: [id], onDelete: Cascade)
   theme          Theme          @relation(fields: [themeId], references: [id])
   evaluations    Evaluation[]
 
