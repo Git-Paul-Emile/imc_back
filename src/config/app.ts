@@ -11,6 +11,7 @@ import questionRoutes from "../routes/question.route.js";
 import reponseRoutes from "../routes/reponse.route.js";
 import entreprises from "../routes/entreprise.route.js";
 import recommandationRoutes from "../routes/recommandation.route.js";
+import interpretationRoutes from "../routes/interpretation.route.js";
 
 
 const app = express();
@@ -66,6 +67,7 @@ app.use("/api/questions", questionRoutes);
 app.use("/api/reponses", reponseRoutes);
 app.use("/api/entreprises", entreprises);
 app.use("/api/recommandations", recommandationRoutes);
+app.use("/api/interpretations", interpretationRoutes);
 
 
 

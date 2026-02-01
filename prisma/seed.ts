@@ -5,3 +5,4 @@ import './seeds/question.seed';
 import './seeds/reponse.seed';
 import './seeds/entreprise.seed';
 import './seeds/recommandation.seed';
+import './seeds/interpretation.seed';
